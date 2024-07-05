@@ -2,6 +2,7 @@ import pytest
 from selenium import webdriver
 from fixtures.browser import browserChrome
 from pageObjects.test_automation_practice_page import TestAutomationPracticePage
+import pprint
 
 def test_interactWithPage(browserChrome):
     # Variables for the test
@@ -18,6 +19,7 @@ def test_interactWithPage(browserChrome):
     priceColumnName = "Price"
     product2Price = "$19.99"
     product3Price = "$5.99"
+    product5Name = "Product 5"
     pauseText = "Press enter in terminal to finish..."
 
     testAutomationPracticePage = TestAutomationPracticePage(browserChrome)
@@ -58,6 +60,9 @@ def test_interactWithPage(browserChrome):
 
     # Click on select by column name
     testAutomationPracticePage.selectProductOnPaginationTableByRowNumber(3)
+
+    # Click on select by given product name
+    testAutomationPracticePage.selectProductByName(product5Name)
 
     # Pause execution until press enter in terminal
     input(pauseText)

@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from commonElements.commonElements import commonElements
+import pprint
 
 class TestAutomationPracticePage(commonElements):
     def __init__(self, driver):
@@ -38,3 +39,14 @@ class TestAutomationPracticePage(commonElements):
         element = self.getCellByColumnName(self.paginationTable, "Select", row)
         targetElement = element.find_element(By.CSS_SELECTOR, "input[type=checkbox]")
         targetElement.click()
+    
+    def selectProductByName(self, productName):
+        # Get target rows
+        rows = self.getRowsByColumnValue(self.paginationTable, "Name", productName)
+
+        # Get target cells from rows
+        cells = self.getCellsFromRowsByPosition(rows, 3)
+
+        # Click on the select cells
+        self.clickMultipleCellsWithinElement(cells, "input")
+
