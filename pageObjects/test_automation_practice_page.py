@@ -13,6 +13,9 @@ class TestAutomationPracticePage(commonElements):
         self.headerInner = (By.ID, "header-inner")
         self.divClass = (By.CSS_SELECTOR, "div")
         self.daysList = (By.CSS_SELECTOR, ".post-body > div:nth-child(9)")
+        self.openCartLink = (By.CSS_SELECTOR, ".post-body > a:nth-child(21)")
+        self.orangeHRMLink = (By.CSS_SELECTOR, ".post-body > a:nth-child(22)")
+        self.submitButton = (By.ID, "FSsubmit")
 
         # Form locators
         self.nameInput = (By.ID, "name")
@@ -28,12 +31,22 @@ class TestAutomationPracticePage(commonElements):
         self.webTable = (By.CSS_SELECTOR, '[name="BookTable"]')
         self.paginationTable = (By.ID, "productTable")
 
+        # Datepicker locators
+        self.calendar = (By.ID, "datepicker")
+
+        # Iframe locators
+        self.iframeTapLocator = (By.CSS_SELECTOR, "iframe[id*=frame]")
+        self.iframeHeaderError = (By.CSS_SELECTOR, "body > div > div:nth-child(1)")
+        self.iframeErrorDescribe = (By.CSS_SELECTOR, "body > div > div:nth-child(3)")
+
     def load(self):
         self.driver.get(self.pageUrl)
 
-    def selectDayOfList(self, position):
-        element = commonElements.getListElement(self, self.daysList, self.divClass, position)
-        element.click()
+    def selectDayOfListByPosition(self, position):
+        commonElements.clickOnListElementByPosition(self, self.daysList, self.divClass, position)
+    
+    def selectDayOfListByValue(self, value):
+        commonElements.clickOnListElementByValue(self, self.daysList, self.divClass, value)
     
     def selectProductOnPaginationTableByRowNumber(self, row):
         element = self.getCellByColumnName(self.paginationTable, "Select", row)
@@ -50,3 +63,83 @@ class TestAutomationPracticePage(commonElements):
         # Click on the select cells
         self.clickMultipleCellsWithinElement(cells, "input")
 
+    def validateWeekdayIsChecked(self, value):
+        targetElement = commonElements.getListElementByValue(self, self.daysList, self.divClass, value)
+
+        targetCheckbox = targetElement.find_element(By.CSS_SELECTOR, 'input')
+
+        self.validateElementIsChecked(targetCheckbox)
+    
+    def validateWeekdayIsNotChecked(self, value):
+        targetElement = commonElements.getListElementByValue(self, self.daysList, self.divClass, value)
+
+        targetCheckbox = targetElement.find_element(By.CSS_SELECTOR, 'input')
+
+        self.validateElementIsNotChecked(targetCheckbox)
+    
+    def validateBookAuthor(self, bookName, author):
+        # Get target rows
+        rows = self.getRowsByColumnValue(self.webTable, "BookName", bookName)
+
+        # Get target cells from rows
+        cells = self.getCellsFromRowsByPosition(rows, 1)
+
+        for cell in cells:
+            assert cell.text == author, f"Expected text to be '{author}' but got '{cell.text}'"
+            print("\nSucessful validated, Book and Author match!")
+
+    def validateBookSubject(self, bookName, subject):
+        # Get target rows
+        rows = self.getRowsByColumnValue(self.webTable, "BookName", bookName)
+
+        # Get target cells from rows
+        cells = self.getCellsFromRowsByPosition(rows, 2)
+
+        for cell in cells:
+            assert cell.text == subject, f"Expected text to be '{subject}' but got '{cell.text}'"
+            print("\nSucessful validated, Book and Subject match!")
+    
+    def validateBookPrice(self, bookName, price):
+        # Get target rows
+        rows = self.getRowsByColumnValue(self.webTable, "BookName", bookName)
+
+        # Get target cells from rows
+        cells = self.getCellsFromRowsByPosition(rows, 3)
+
+        for cell in cells:
+            assert cell.text == price, f"Expected text to be '{price}' but got '{cell.text}'"
+            print("\nSucessful validated, Book and Price match!")
+    
+    def validateProductPrice(self, product, price):
+        # Get target rows
+        rows = self.getRowsByColumnValue(self.paginationTable, "Name", product)
+
+        # Get target cells from rows
+        cells = self.getCellsFromRowsByPosition(rows, 2)
+
+        for cell in cells:
+            assert cell.text == price, f"Expected text to be '{price}' but got '{cell.text}'"
+            print("\nSucessful validated, Product and Price match!")
+    
+    def submitFormAndValidate(self):
+        expectedContentLabel = "An error has occurred"
+        expectedContentDescription = "The result storage capacity has been reached for this form. Your result was not created. Please contact the form owner."
+
+        # Switch to Iframe
+        self.switchToIframe(self.iframeTapLocator)
+
+        # Submit form
+        self.clickElement(self.submitButton)
+
+        # Validate error label
+        contentLabel = self.getElement(self.iframeHeaderError).text
+        assert contentLabel == expectedContentLabel, f"\nIframe content should be {expectedContentLabel}, but instead is {contentLabel}."
+        print(f"\nIframe content validated successfully: '{expectedContentLabel}'")
+
+        # Validate error description
+        contentDescription = self.getElement(self.iframeErrorDescribe).text
+        assert contentDescription == expectedContentDescription, f"\nIframe content should be {expectedContentDescription}, but instead is {contentDescription}."
+        print(f"\nIframe content validated successfully: '{expectedContentDescription}'")
+
+        # Switch back to default
+        self.switchToDefaultContent()

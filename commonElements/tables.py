@@ -1,18 +1,10 @@
+from commonElements.elements import elements
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 import pprint
 
-class tables:
+class tables(elements):
     def __init__(self, driver):
         self.driver = driver
-
-    def getTableElement(self, tableLocator: tuple):
-        # Return table element
-        return WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(tableLocator)
-        )
     
     def getHeadersFromTable(self, tableElement):
         # Return table headers element
@@ -30,7 +22,7 @@ class tables:
 
     def getRowsByColumnValue(self, tableLocator, columnName, targetValue, repeatableElement = "tr"):
         # Store table element
-        tableElement = self.getTableElement(tableLocator)
+        tableElement = self.getElement(tableLocator)
         # Store columns from table element
         columns = self.getColumnsFromTable(tableElement)
         # Get index of given column name
@@ -45,6 +37,7 @@ class tables:
             rows = formatedTableElement.find_elements(By.TAG_NAME, repeatableElement)
         except:
             rows = tableElement.find_elements(By.TAG_NAME, repeatableElement)
+            rows.pop(0)
 
         for row in rows:
             searchCell = row.find_elements(By.TAG_NAME, "td")[columnIndex]
@@ -62,7 +55,7 @@ class tables:
     
     def getCellByPosition(self, tableLocator: tuple, column: int, row: int):
         # Store table element
-        tableElement = self.getTableElement(tableLocator)
+        tableElement = self.getElement(tableLocator)
 
         # Verify if <thead> exists on table, then find the specific cell
         try:
@@ -79,7 +72,7 @@ class tables:
     
     def getCellByColumnName(self, tableLocator: tuple, columnName, row: int):
         # Store table element
-        tableElement = self.getTableElement(tableLocator)
+        tableElement = self.getElement(tableLocator)
         # Store columns from table element
         columns = self.getColumnsFromTable(tableElement)
         # Get index of given column name

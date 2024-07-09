@@ -12,15 +12,26 @@ def test_interactWithPage(browserChrome):
     userPhone = "(62)99999-9999"
     userAddress = "Goiania - GO"
     userCountry = "Brazil"
-    userAnimesh = "Animesh"
-    userAmod = "Amod"
+    sundayText = "Sunday"
+    mondayText = "Monday"
+    tuesdayText = "Tuesday"
+    wednesdayText = "Wednesday"
+    thursdayText = "Thursday"
+    fridayText = "Friday"
+    saturdayext = "Saturday"
+    targetDate = '12/25/2022'
+    openCartLink = 'https://demo.opencart.com/'
+    orangeHRMLink = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
+    userAmit = "Amit"
+    thirdBook = "Learn JS"
+    fourthBook = "Master In Selenium"
+    sixthBook = "Master In JS"
+    javascriptSubject = "Javascript"
+    fourthBookPrice = "3000"
     color = "Green"
-    authorColumnName = "Author"
-    priceColumnName = "Price"
-    product2Price = "$19.99"
-    product3Price = "$5.99"
-    product5Name = "Product 5"
-    pauseText = "Press enter in terminal to finish..."
+    product4Name = "Product 4"
+    product4Price = "$7.99"
+    pauseText = "\n\nPress enter in terminal to finish..."
 
     testAutomationPracticePage = TestAutomationPracticePage(browserChrome)
     testAutomationPracticePage.load()
@@ -35,10 +46,20 @@ def test_interactWithPage(browserChrome):
     testAutomationPracticePage.type(testAutomationPracticePage.addressInput, userAddress)
 
     # Selecting gender
-    testAutomationPracticePage.clickElement(testAutomationPracticePage.maleGenderRadioButton)
+    testAutomationPracticePage.clickElement(testAutomationPracticePage.femaleGenderRadioButton)
 
-    # Selecting Tuesday on list
-    testAutomationPracticePage.selectDayOfList(3)
+    # Selecting Monday and Wednesday on list
+    testAutomationPracticePage.selectDayOfListByValue(mondayText)
+    testAutomationPracticePage.selectDayOfListByValue(wednesdayText)
+
+    # Validating Days selection
+    testAutomationPracticePage.validateWeekdayIsNotChecked(sundayText)
+    testAutomationPracticePage.validateWeekdayIsChecked(mondayText)
+    testAutomationPracticePage.validateWeekdayIsNotChecked(tuesdayText)
+    testAutomationPracticePage.validateWeekdayIsChecked(wednesdayText)
+    testAutomationPracticePage.validateWeekdayIsNotChecked(thursdayText)
+    testAutomationPracticePage.validateWeekdayIsNotChecked(fridayText)
+    testAutomationPracticePage.validateWeekdayIsNotChecked(saturdayext)
 
     # Selecting country
     testAutomationPracticePage.select(testAutomationPracticePage.countryDropdown, userCountry)
@@ -46,23 +67,30 @@ def test_interactWithPage(browserChrome):
     # Selecting colors
     testAutomationPracticePage.select(testAutomationPracticePage.colors, color)
 
-    # Validating headless table content by position
-    testAutomationPracticePage.validateCellContentByPosition(testAutomationPracticePage.webTable, 2, 3, userAnimesh)
+    # Select an date on calendar
+    testAutomationPracticePage.selectDate(testAutomationPracticePage.calendar, targetDate)
 
-    # Validating headless table content by column content
-    testAutomationPracticePage.validateCellContentByColumnName(testAutomationPracticePage.webTable, authorColumnName, 5, userAmod)
+    # Validate Links
+    testAutomationPracticePage.validateElementHref(testAutomationPracticePage.openCartLink, openCartLink)
+    testAutomationPracticePage.validateElementHref(testAutomationPracticePage.orangeHRMLink, orangeHRMLink)
 
-    # Validating headed table content by position
-    testAutomationPracticePage.validateCellContentByPosition(testAutomationPracticePage.paginationTable, 3, 2, product2Price)
+    # Validate Author from given book
+    testAutomationPracticePage.validateBookAuthor(sixthBook, userAmit)
 
-    # Validating headed table content by column content
-    testAutomationPracticePage.validateCellContentByColumnName(testAutomationPracticePage.paginationTable, priceColumnName, 3, product3Price)
+    # Validate Subject from given book
+    testAutomationPracticePage.validateBookSubject(thirdBook, javascriptSubject)
 
-    # Click on select by column name
-    testAutomationPracticePage.selectProductOnPaginationTableByRowNumber(3)
+    # Validate Price from given book
+    testAutomationPracticePage.validateBookPrice(fourthBook, fourthBookPrice)
 
     # Click on select by given product name
-    testAutomationPracticePage.selectProductByName(product5Name)
+    testAutomationPracticePage.selectProductByName(product4Name)
+
+    # Validate Price from given product
+    testAutomationPracticePage.validateProductPrice(product4Name, product4Price)
+
+    # Submit form and validate iframe
+    testAutomationPracticePage.submitFormAndValidate()
 
     # Pause execution until press enter in terminal
     input(pauseText)
