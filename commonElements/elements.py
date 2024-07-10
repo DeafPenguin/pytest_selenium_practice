@@ -52,7 +52,7 @@ class elements:
         assert not element.is_selected(), "\nValidation failed, element is checked!"
         print("\nSucessful validated, element isn't checked!")
     
-    def validateElementHref(self, locator, expectedHref):
+    def validateElementLink(self, locator, expectedLink):
         targetElement = self.getElementHref(locator)
-        assert targetElement == expectedHref, f"\nExpected text to be '{expectedHref}' but got '{targetElement}'"
+        assert targetElement == expectedLink, f"\nExpected text to be '{expectedLink}' but got '{targetElement}'"
         print("\nSucessful validated, Href match!")

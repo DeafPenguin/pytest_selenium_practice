@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 from commonElements.commonElements import commonElements
-import pprint
 
 class TestAutomationPracticePage(commonElements):
     def __init__(self, driver):
@@ -42,6 +41,24 @@ class TestAutomationPracticePage(commonElements):
     def load(self):
         self.driver.get(self.pageUrl)
 
+    def fillUserForm(self, userName, userEmail, userPhone, userAddress):
+        self.type(self.nameInput, userName)
+        self.type(self.emailInput, userEmail)
+        self.type(self.phoneInput, userPhone)
+        self.type(self.addressInput, userAddress)
+
+    def selectFemaleGenderOnForm(self):
+        self.clickElement(self.femaleGenderRadioButton)
+    
+    def selectMaleGenderOnForm(self):
+        self.clickElement(self.maleGenderRadioButton)
+
+    def selectCountry(self, userCountry):
+        self.select(self.countryDropdown, userCountry)
+
+    def setColor(self, color):
+        self.select(self.colors, color)
+
     def selectDayOfListByPosition(self, position):
         commonElements.clickOnListElementByPosition(self, self.daysList, self.divClass, position)
     
@@ -62,6 +79,16 @@ class TestAutomationPracticePage(commonElements):
 
         # Click on the select cells
         self.clickMultipleCellsWithinElement(cells, "input")
+
+    def selectDateOnForm(self, targetDate):
+        self.selectDate(self.calendar, targetDate)
+
+    def validateHeader(self):
+        self.validateElementText(self.headerInner, "Automation Testing Practice")
+
+    def validateFormLinks(self):
+        self.validateElementLink(self.openCartLink, 'https://demo.opencart.com/')
+        self.validateElementLink(self.orangeHRMLink, 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
 
     def validateWeekdayIsChecked(self, value):
         targetElement = commonElements.getListElementByValue(self, self.daysList, self.divClass, value)

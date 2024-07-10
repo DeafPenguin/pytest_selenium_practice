@@ -2,11 +2,9 @@ import pytest
 from selenium import webdriver
 from fixtures.browser import browserChrome
 from pageObjects.test_automation_practice_page import TestAutomationPracticePage
-import pprint
 
 def test_interactWithPage(browserChrome):
     # Variables for the test
-    headerText = "Automation Testing Practice"
     userName = "Victor Machado"
     userEmail = "victormurilo@gmail.com"
     userPhone = "(62)99999-9999"
@@ -20,8 +18,6 @@ def test_interactWithPage(browserChrome):
     fridayText = "Friday"
     saturdayext = "Saturday"
     targetDate = '12/25/2022'
-    openCartLink = 'https://demo.opencart.com/'
-    orangeHRMLink = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
     userAmit = "Amit"
     thirdBook = "Learn JS"
     fourthBook = "Master In Selenium"
@@ -31,22 +27,18 @@ def test_interactWithPage(browserChrome):
     color = "Green"
     product4Name = "Product 4"
     product4Price = "$7.99"
-    pauseText = "\n\nPress enter in terminal to finish..."
 
     testAutomationPracticePage = TestAutomationPracticePage(browserChrome)
     testAutomationPracticePage.load()
 
     # Validating header
-    testAutomationPracticePage.validateElementText(testAutomationPracticePage.headerInner, headerText)
+    testAutomationPracticePage.validateHeader()
 
     # Fill form
-    testAutomationPracticePage.type(testAutomationPracticePage.nameInput, userName)
-    testAutomationPracticePage.type(testAutomationPracticePage.emailInput, userEmail)
-    testAutomationPracticePage.type(testAutomationPracticePage.phoneInput, userPhone)
-    testAutomationPracticePage.type(testAutomationPracticePage.addressInput, userAddress)
+    testAutomationPracticePage.fillUserForm(userName, userEmail, userPhone, userAddress)
 
     # Selecting gender
-    testAutomationPracticePage.clickElement(testAutomationPracticePage.femaleGenderRadioButton)
+    testAutomationPracticePage.selectFemaleGenderOnForm()
 
     # Selecting Monday and Wednesday on list
     testAutomationPracticePage.selectDayOfListByValue(mondayText)
@@ -62,17 +54,16 @@ def test_interactWithPage(browserChrome):
     testAutomationPracticePage.validateWeekdayIsNotChecked(saturdayext)
 
     # Selecting country
-    testAutomationPracticePage.select(testAutomationPracticePage.countryDropdown, userCountry)
+    testAutomationPracticePage.selectCountry(userCountry)
 
     # Selecting colors
-    testAutomationPracticePage.select(testAutomationPracticePage.colors, color)
+    testAutomationPracticePage.setColor(color)
 
     # Select an date on calendar
-    testAutomationPracticePage.selectDate(testAutomationPracticePage.calendar, targetDate)
+    testAutomationPracticePage.selectDateOnForm(targetDate)
 
     # Validate Links
-    testAutomationPracticePage.validateElementHref(testAutomationPracticePage.openCartLink, openCartLink)
-    testAutomationPracticePage.validateElementHref(testAutomationPracticePage.orangeHRMLink, orangeHRMLink)
+    testAutomationPracticePage.validateFormLinks()
 
     # Validate Author from given book
     testAutomationPracticePage.validateBookAuthor(sixthBook, userAmit)
@@ -91,6 +82,3 @@ def test_interactWithPage(browserChrome):
 
     # Submit form and validate iframe
     testAutomationPracticePage.submitFormAndValidate()
-
-    # Pause execution until press enter in terminal
-    input(pauseText)
