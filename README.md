@@ -54,8 +54,14 @@ To generate reports with Allure, follow the steps below:
 
 `commonElements/` : Folder for common classes used in the tests.
 
+`drivers/` : Folder for drivers files used to set up the project.
+
 `e2e_tests/` : Folder containing the end-to-end tests.
 
 `fixtures/` : Folder for fixtures used in the tests.
 
+`k8s/` : Folder for YAML files used to set up docker.
+
 `pageObjects/` : Folder for page objects used in the tests.
+
+`reports/` : Folder for generated reports from Allure.
