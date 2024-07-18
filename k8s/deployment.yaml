@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e2e-tests-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e2e-tests
+  template:
+    metadata:
+      labels:
+        app: e2e-tests
+    spec:
+      containers:
+      - name: e2e-tests
+        image: deafpenguin/e2e-tests
+        ports:
+        - containerPort: 8080
